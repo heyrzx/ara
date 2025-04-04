@@ -1,5 +1,6 @@
 from aiohttp import web, ClientSession
 import asyncio
+import os
 from bot import main as start_bot
 
 async def handle(request):
@@ -10,9 +11,12 @@ async def start_web_server():
     app.router.add_get('/', handle)
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, '0.0.0.0', 8080)
+
+    # Get the PORT from environment (default to 8080)
+    port = int(os.getenv("PORT", 8080))
+    site = web.TCPSite(runner, '0.0.0.0', port)
     await site.start()
-    print("Web server started on port 8080")
+    print(f"Web server started on port {port}")
 
 async def keep_alive():
     await asyncio.sleep(10)  # Wait for server to start
@@ -23,7 +27,7 @@ async def keep_alive():
                     print(f"Keep-alive ping: {resp.status}")
         except Exception as e:
             print(f"Keep-alive error: {e}")
-        await asyncio.sleep(120)  # Wait 5 minutes between pings
+        await asyncio.sleep(300)  # Wait 5 minutes between pings
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
