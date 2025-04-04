@@ -27,7 +27,7 @@ async def keep_alive():
                     print(f"Keep-alive ping: {resp.status}")
         except Exception as e:
             print(f"Keep-alive error: {e}")
-        await asyncio.sleep(300)  # Wait 5 minutes between pings
+        await asyncio.sleep(180)  # Wait 5 minutes between pings
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
